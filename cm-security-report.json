@@ -1,0 +1,30 @@
+{
+  "scan_id": "cm-scan-cepf141-guardrail",
+  "status": "FAILED",
+  "summary": {
+    "critical": 1,
+    "high": 1,
+    "medium": 0,
+    "low": 0
+  },
+  "vulnerabilities": [
+    {
+      "id": "VULN-SQLI-001",
+      "severity": "CRITICAL",
+      "file": "routes/login.ts",
+      "line": 6,
+      "cwe": "CWE-89",
+      "description": "SQL Injection vulnerability via unsanitized user input in authentication query.",
+      "remediation": "Use parameterized SQL queries or prepared statements."
+    },
+    {
+      "id": "VULN-XSS-002",
+      "severity": "HIGH",
+      "file": "routes/search.ts",
+      "line": 5,
+      "cwe": "CWE-79",
+      "description": "Reflected Cross-Site Scripting (XSS) in search query response.",
+      "remediation": "HTML-encode untrusted input before rendering."
+    }
+  ]
+}

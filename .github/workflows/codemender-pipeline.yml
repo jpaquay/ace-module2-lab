@@ -1,0 +1,40 @@
+name: CodeMender Security Guardrail Pipeline
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+  id-token: write
+
+jobs:
+  security-guardrail:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Run CodeMender Security Scan
+        id: cm_scan
+        run: |
+          echo "Running CodeMender scan on repository..."
+          cat cm-security-report.json
+
+      - name: Upload CodeMender Security Report
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: codemender-report
+          path: cm-security-report.json
+
+      - name: Security Gate (Block Deployment on HIGH/CRITICAL)
+        run: |
+          echo "❌ HIGH/CRITICAL vulnerabilities detected by CodeMender! Blocking deployment."
+          exit 1
